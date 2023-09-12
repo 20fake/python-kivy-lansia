@@ -1,0 +1,266 @@
+CustomScreenManager:
+    HomeScreen:
+    ReminderScreen:
+    AddReminderScreen:
+    RingingScreen:
+
+
+<ListItemWithCheckbox>:
+    id: the_list_item
+    markup: True
+
+    IconRightWidget:
+        icon: 'trash-can-outline'
+        theme_text_color: "Custom"
+        text_color: 1, 0, 0, 1
+        on_release:
+            root.delete_item(the_list_item)
+
+<HomeScreen>:
+    MDFloatLayout:
+        md_bg_color: 1, 1, 1, 1
+
+    Image:
+        source: "putri.png"
+        size_hint: .35, .35
+        pos_hint: {"center_x" : .5, "center_y" :.7}
+
+    MDLabel:
+        id: labelteks
+        text: ""
+        halign: "center"
+        pos_hint: {'center_y': .6}
+        color:
+
+    MDLabel:
+        text: "Tekan Tombol Microphone\n untuk Berbicara"
+        font_size: "20sp"
+        halign: "center"
+        pos_hint: {'center_y': .5}
+
+    MDFloatingActionButton:
+        id: btn_speak
+        icon: "microphone"
+        icon_size:"50sp"
+        # size_hint: .10, .10
+        pos_hint: {'center_x': .5, 'center_y': .35}
+        on_release: root.start_listening()
+    
+    MDRaisedButton:
+        id: btn_remindersc
+        text: "Pengingat"
+        font_size: "30sp"
+        pos_hint: {'center_x': .5, 'center_y': .15}
+        on_release: 
+            root.manager.transition.direction = "left"
+            root.manager.current = "reminderscreen"
+
+<ReminderScreen>:
+    MDFloatLayout:
+        md_bg_color: 1, 1, 1, 1
+
+    MDTopAppBar:
+        title: "Daftar Pengingat"
+        pos_hint : {"top" :1}
+
+    ScrollView:
+        pos_hint: {'center_y': .5, 'center_x': .5}
+        size_hint: .9, .78
+
+        MDList:
+            id : container
+    
+    MDBoxLayout:
+        MDBottomAppBar:
+            MDTopAppBar:
+                icon: "plus-thick"
+                type: "bottom"
+                left_action_items: [["home", lambda x: root.home_screen()]]
+                on_action_button: root.move_add_screen(self.icon)
+                # right_action_items: [["trash-can"]]
+
+<RingingScreen>:
+    MDFloatLayout:
+        md_bg_color: 1, 1, 1, 1
+
+        MDLabel:
+            id : label_ring
+            text: root.alarmsaja
+            halign : "center"
+            pos_hint: {'center_y': .5}
+        
+        MDRaisedButton:
+            id : stop_button
+            text : "Stop"
+            pos_hint: {'center_x': .5,'center_y': .4}
+            on_release: root.stop_ring()
+
+<AddReminderScreen>:    
+    MDBoxLayout:
+        md_bg_color: rgba(246, 250, 255, 255)
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            title: "Tambahkan Pengingat"
+
+        MDBoxLayout:
+            # md_bg_color: "yellow"
+            size_hint_y: .3
+
+            MDBoxLayout:
+                padding: dp(10)
+
+                MDRelativeLayout:
+                    md_bg_color: "white"
+                    radius: [10]
+
+                    MDLabel:
+                        text: "Ingatkan Saya :"
+                        pos_hint: {'center_x': 0.4,'center_y': 0.5}
+                        halign: "center"
+
+                    MDLabel:
+                        id: tambah_jenis_alarm
+                        text: "____________"
+                        halign: "left"
+                        pos_hint: {'center_x': 1.1,'center_y': 0.5}
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            md_bg_color: "blue"
+            radius: [25, 25, 0 ,0]
+
+            MDBoxLayout:
+                padding: dp(15)
+                
+                MDRelativeLayout:
+                    md_bg_color: "white"
+                    radius: [10]
+
+                    MDLabel:
+                        id: label_ring
+                        text: "Makan"
+                        halign: "center"
+                        pos_hint: {'center_x': .4, 'center_y': .5}
+
+                    MDCheckbox:
+                        size_hint: None, None
+                        size: "48dp", "48dp"
+                        pos_hint: {'center_x': .7, 'center_y': .5}
+                        on_active: root.checkbox_makan(self, self.active)
+            
+            MDBoxLayout:
+                padding: dp(15)
+                
+                MDRelativeLayout:
+                    md_bg_color: "white"
+                    radius: [10]
+
+                    MDLabel:
+                        id: label_ring
+                        text: "Minum Obat"
+                        halign: "center"
+                        pos_hint: {'center_x': .4, 'center_y': .5}
+
+                    MDCheckbox:
+                        size_hint: None, None
+                        size: "48dp", "48dp"
+                        pos_hint: {'center_x': .7, 'center_y': .5}
+                        on_active: root.checkbox_minumobat(self, self.active)
+            
+            MDBoxLayout:
+                padding: dp(15)
+                
+                MDRelativeLayout:
+                    md_bg_color: "white"
+                    radius: [10]
+
+                    MDLabel:
+                        id: label_ring
+                        text: "Olahraga"
+                        halign: "center"
+                        pos_hint: {'center_x': .4, 'center_y': .5}
+
+                    MDCheckbox:
+                        size_hint: None, None
+                        size: "48dp", "48dp"
+                        pos_hint: {'center_x': .7, 'center_y': .5}
+                        on_active: root.checkbox_olahraga(self, self.active)
+
+        MDBoxLayout:
+            md_bg_color: "blue"
+            orientation: 'vertical'
+
+            MDBoxLayout:
+                padding: dp(15)
+                
+                MDBoxLayout:
+                    radius: [10]
+                    spacing: dp(10)
+
+                    MDTextField:
+                        id: title_add
+                        hint_text: "Catatan Pengingat"
+                        mode: "fill"
+                        fill_color: 0, 0, 0, .4
+                        pos_hint: {'top': 1.0}
+
+            MDBoxLayout:
+                padding: dp(15)
+                
+                MDBoxLayout:
+                    radius: [10]
+                    spacing: dp(10)
+
+                    MDTextField:
+                        id: alarm_timed
+                        hint_text: "Waktu"
+                        mode: "fill"
+                        readonly: True
+                        # icon_right: "clock"
+                        fill_color: 0, 0, 0, .4
+                        pos_hint: {'top': 1.0}
+
+                    MDFloatingActionButton:
+                        icon: "clock-outline"
+                        pos_hint: {'top': 1.0}
+                        on_release: root.time_picker()
+            
+            MDBoxLayout:
+                padding: dp(15)
+                
+                MDBoxLayout:
+                    radius: [10]
+                    spacing: dp(10)
+
+                    MDTextField:
+                        id: date_time
+                        hint_text: "Tanggal"
+                        mode: "fill"
+                        fill_color: 0, 0, 0, .4
+                        pos_hint: {'top': 1.0}
+                    
+                    MDFloatingActionButton:
+                        icon: "calendar-outline"
+                        pos_hint: {'top': 1.0}
+                        on_release: root.date_picker()
+
+            MDBoxLayout:
+                padding: dp(10)
+
+                MDRelativeLayout:
+                    radius: [10]
+
+                    MDRaisedButton:
+                        id: btn_remindersc2
+                        text: "Kembali"
+                        pos_hint: {'center_x': 0.2,'center_y': 0.5}
+                        on_release:
+                            root.manager.transition.direction = "right"
+                            root.manager.current = "reminderscreen"
+
+                    MDRaisedButton:
+                        id: btn_save
+                        text: "Simpan"
+                        pos_hint: {'center_x': 0.8,'center_y': 0.5}
+                        on_release: root.save_reminder()
